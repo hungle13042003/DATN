@@ -1,0 +1,257 @@
+services:
+
+  # ================= API GATEWAY =================
+  api_gateway:
+    build: ./api_gateway
+    container_name: api_gateway
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      JWT_SECRET: supersecretkey
+      USER_SERVICE_URL: http://user_service:3001
+      PRODUCT_SERVICE_URL: http://product_service:3002
+      CART_SERVICE_URL: http://cart_service:3003
+      PROMOTION_SERVICE_URL: http://promotion_service:3004
+      ORDER_SERVICE_URL: http://order_service:3005
+      INVENTORY_SERVICE_URL: http://inventory_service:3006
+      STORE_SERVICE_URL: http://store_service:3007
+      PAYMENT_SERVICE_URL: http://payment_service:3008
+    depends_on:
+      - user_service
+      - product_service
+      - cart_service
+      - promotion_service
+      - order_service
+      - inventory_service
+      - store_service
+      - payment_service
+    networks:
+      - microservice_net
+  # ================= USER SERVICE =================
+  # user_service:
+  #   build: ./user_service
+  #   container_name: user_service
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     PORT: 3001
+  #     MONGO_URI: mongodb://user_mongo:27017/user_db
+  #   depends_on:
+  #     - user_mongo
+  #   networks:
+  #     - microservice_net
+
+  # user_mongo:
+  #   image: mongo:6
+  #   container_name: user_mongo
+  #   volumes:
+  #     - user_data:/data/db
+  #   networks:
+  #     - microservice_net
+  user_service:
+    build: ./user_service
+    container_name: user_service
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      MONGO_URI: mongodb://user_mongo:27017/user_db
+    depends_on:
+      - user_mongo
+    networks:
+      - microservice_net
+
+  user_mongo:
+    image: mongo:6
+    container_name: user_mongo
+    ports:
+      - "27018:27017" # 👈 ADD THIS
+    volumes:
+      - user_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= PRODUCT SERVICE =================
+  product_service:
+    build: ./product_service
+    container_name: product_service
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      MONGO_URI: mongodb://product_mongo:27017/product_service
+    depends_on:
+      - product_mongo
+    networks:
+      - microservice_net
+
+  product_mongo:
+    image: mongo:6
+    container_name: product_mongo
+    ports:
+      - "27019:27017"
+    volumes:
+      - product_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= CART SERVICE =================
+  cart_service:
+    build: ./cart_service
+    container_name: cart_service
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      MONGO_URI: mongodb://cart_mongo:27017/cart_service
+    depends_on:
+      - cart_mongo
+    networks:
+      - microservice_net
+
+  cart_mongo:
+    image: mongo:6
+    container_name: cart_mongo
+    ports:
+      - "27020:27017"
+    volumes:
+      - cart_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= PROMOTION SERVICE =================
+  promotion_service:
+    build: ./promotion_service
+    container_name: promotion_service
+    ports:
+      - "3004:3004"
+    environment:
+      PORT: 3004
+      MONGO_URI: mongodb://promotion_mongo:27017/promotion_service
+    depends_on:
+      - promotion_mongo
+    networks:
+      - microservice_net
+
+  promotion_mongo:
+    image: mongo:6
+    container_name: promotion_mongo
+    ports:
+      - "27021:27017"
+    volumes:
+      - promotion_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= ORDER SERVICE =================
+  order_service:
+    build: ./order_service
+    container_name: order_service
+    ports:
+      - "3005:3005"
+    environment:
+      PORT: 3005
+      MONGO_URI: mongodb://order_mongo:27017/order_service
+    depends_on:
+      - order_mongo
+    networks:
+      - microservice_net
+
+  order_mongo:
+    image: mongo:6
+    container_name: order_mongo
+    ports:
+      - "27022:27017"
+    volumes:
+      - order_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= INVENTORY SERVICE =================
+  inventory_service:
+    build: ./inventory_service
+    container_name: inventory_service
+    ports:
+      - "3006:3006"
+    environment:
+      PORT: 3006
+      MONGO_URI: mongodb://inventory_mongo:27017/inventory_service
+    depends_on:
+      - inventory_mongo
+    networks:
+      - microservice_net
+
+  inventory_mongo:
+    image: mongo:6
+    container_name: inventory_mongo
+    ports:
+      - "27023:27017"
+    volumes:
+      - inventory_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= STORE SERVICE =================
+  store_service:
+    build: ./store_service
+    container_name: store_service
+    ports:
+      - "3007:3007"
+    environment:
+      PORT: 3007
+      MONGO_URI: mongodb://store_mongo:27017/store_service
+    depends_on:
+      - store_mongo
+    networks:
+      - microservice_net
+
+  store_mongo:
+    image: mongo:6
+    container_name: store_mongo
+    ports:
+      - "27024:27017"
+    volumes:
+      - store_data:/data/db
+    networks:
+      - microservice_net
+
+  # ================= PAYMENT SERVICE =================
+  payment_service:
+    build: ./payment_service
+    container_name: payment_service
+    ports:
+      - "3008:3008"
+    environment:
+      PORT: 3008
+      MONGO_URI: mongodb://payment_mongo:27017/payment_service
+    depends_on:
+      - payment_mongo
+    networks:
+      - microservice_net
+
+  payment_mongo:
+    image: mongo:6
+    container_name: payment_mongo
+    ports:
+      - "27025:27017"
+    volumes:
+      - payment_data:/data/db
+    networks:
+      - microservice_net
+
+# ================= VOLUMES =================
+volumes:
+  user_data:
+  product_data:
+  cart_data:
+  promotion_data:
+  order_data:
+  inventory_data:
+  store_data:
+  payment_data:
+
+    # ================= NETWORK =================
+networks:
+  microservice_net:
+    driver: bridge
