@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  kong:
+    image: kong:3.6
+    container_name: kong
+    restart: unless-stopped
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /kong/declarative/kong.yml
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    volumes:
+      - ./kong.yml:/kong/declarative/kong.yml
+      
+networks:
+  kong-net:
+    driver: bridge

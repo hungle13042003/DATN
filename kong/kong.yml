@@ -1,0 +1,66 @@
+_format_version: "3.0"
+
+services:
+  # ================= USER SERVICE =================
+  - name: user-service
+    url: http://host.docker.internal:3001/api/users
+    routes:
+      - name: user-route
+        paths:
+          - /api/users
+
+  # # ================= PRODUCT SERVICE =================
+  - name: product-service
+    url: http://host.docker.internal:3002/api
+    routes:
+      - name: product-route
+        paths:
+          - /api/products
+
+  # # ================= CART SERVICE =================
+  - name: cart-service
+    url: http://host.docker.internal:3003/api/cart
+    routes:
+      - name: cart-route
+        paths:
+          - /api/carts
+
+  # # ================= ORDER SERVICE =================
+  - name: order-service
+    url: http://host.docker.internal:3005/api
+    routes:
+      - name: order-route
+        paths:
+          - /api/orders
+
+  # # ================= PAYMENT SERVICE =================
+  - name: payment-service
+    url: http://host.docker.internal:3008/api
+    routes:
+      - name: payment-route
+        paths:
+          - /api/payments
+
+  # # ================= INVENTORY SERVICE =================
+  - name: inventory-service
+    url: http://host.docker.internal:3006/api/inventory
+    routes:
+      - name: inventory-route
+        paths:
+          - /api/inventory
+
+  # # ================= PROMOTION SERVICE =================
+  - name: promotion-service
+    url: http://host.docker.internal:3004/api/promotions
+    routes:
+      - name: promotion-route
+        paths:
+          - /api/promotions
+
+  # # ================= STORE SERVICE =================
+  - name: store-service
+    url: http://host.docker.internal:3007/api
+    routes:
+      - name: store-route
+        paths:
+          - /api/stores

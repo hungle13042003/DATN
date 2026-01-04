@@ -1,33 +1,33 @@
 services:
 
   # ================= API GATEWAY =================
-  api_gateway:
-    build: ./api_gateway
-    container_name: api_gateway
-    ports:
-      - "8000:8000"
-    environment:
-      PORT: 8000
-      JWT_SECRET: supersecretkey
-      USER_SERVICE_URL: http://user_service:3001
-      PRODUCT_SERVICE_URL: http://product_service:3002
-      CART_SERVICE_URL: http://cart_service:3003
-      PROMOTION_SERVICE_URL: http://promotion_service:3004
-      ORDER_SERVICE_URL: http://order_service:3005
-      INVENTORY_SERVICE_URL: http://inventory_service:3006
-      STORE_SERVICE_URL: http://store_service:3007
-      PAYMENT_SERVICE_URL: http://payment_service:3008
-    depends_on:
-      - user_service
-      - product_service
-      - cart_service
-      - promotion_service
-      - order_service
-      - inventory_service
-      - store_service
-      - payment_service
-    networks:
-      - microservice_net
+  # api_gateway:
+  #   build: ./api_gateway
+  #   container_name: api_gateway
+  #   ports:
+  #     - "8087:8087"
+  #   environment:
+  #     PORT: 8087
+  #     JWT_SECRET: supersecretkey
+  #     USER_SERVICE_URL: http://user_service:3001
+  #     PRODUCT_SERVICE_URL: http://product_service:3002
+  #     CART_SERVICE_URL: http://cart_service:3003
+  #     PROMOTION_SERVICE_URL: http://promotion_service:3004
+  #     ORDER_SERVICE_URL: http://order_service:3005
+  #     INVENTORY_SERVICE_URL: http://inventory_service:3006
+  #     STORE_SERVICE_URL: http://store_service:3007
+  #     PAYMENT_SERVICE_URL: http://payment_service:3008
+  #   depends_on:
+  #     - user_service
+  #     - product_service
+  #     - cart_service
+  #     - promotion_service
+  #     - order_service
+  #     - inventory_service
+  #     - store_service
+  #     - payment_service
+  #   networks:
+  #     - microservice_net
   # ================= USER SERVICE =================
   # user_service:
   #   build: ./user_service
