@@ -16,6 +16,9 @@ services:
       - name: product-route
         paths:
           - /api/products
+      - name: product-upload-route
+        paths:
+          - /uploads
 
   # # ================= CART SERVICE =================
   - name: cart-service

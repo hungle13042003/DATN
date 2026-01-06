@@ -6,7 +6,11 @@ import {
   deleteUser,
   getProfile,
   updateProfile,
-  adminUpdateUser
+  adminUpdateUser,
+  getAddresses,
+  addAddress,
+  deleteAddress,
+  setDefaultAddress
 } from "../controllers/userController.js";
 
 import { protect, admin } from "../middlewares/authMiddleware.js";
@@ -25,5 +29,12 @@ router.put("/profile", protect, updateProfile);
 router.get("/", protect, admin, getUsers);
 router.delete("/:id", protect, admin, deleteUser);
 router.put("/:id", protect, admin, adminUpdateUser);
+
+// ===== ADDRESS BOOK =====
+router.get("/addresses", protect, getAddresses);
+router.post("/addresses", protect, addAddress);
+router.delete("/addresses/:id", protect, deleteAddress);
+router.put("/addresses/:id/default", protect, setDefaultAddress);
+
 
 export default router;

@@ -20,6 +20,11 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    // 👉 SẢN PHẨM BÁN CHẠY
+    isBestSeller: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

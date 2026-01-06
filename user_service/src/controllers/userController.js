@@ -86,3 +86,62 @@ export const adminUpdateUser = async (req, res) => {
 
   res.json(user);
 };
+
+
+// ================== ADDRESS BOOK ==================
+
+// ✅ LẤY DANH SÁCH ĐỊA CHỈ
+export const getAddresses = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.json(user.addresses || []);
+};
+
+// ✅ THÊM ĐỊA CHỈ
+export const addAddress = async (req, res) => {
+  const { fullName, phone, address, isDefault } = req.body;
+
+  const user = await User.findById(req.user.id);
+
+  // nếu đặt mặc định → bỏ mặc định cũ
+  if (isDefault) {
+    user.addresses.forEach(a => a.isDefault = false);
+    user.address = address; // cập nhật địa chỉ hiển thị nhanh
+  }
+
+  user.addresses.push({
+    fullName,
+    phone,
+    address,
+    isDefault
+  });
+
+  await user.save();
+  res.json(user.addresses);
+};
+
+// ✅ XOÁ ĐỊA CHỈ
+export const deleteAddress = async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  user.addresses = user.addresses.filter(
+    a => a._id.toString() !== req.params.id
+  );
+
+  await user.save();
+  res.json(user.addresses);
+};
+
+// ✅ ĐẶT ĐỊA CHỈ MẶC ĐỊNH
+export const setDefaultAddress = async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  user.addresses.forEach(a => {
+    a.isDefault = a._id.toString() === req.params.id;
+    if (a.isDefault) {
+      user.address = a.address;
+    }
+  });
+
+  await user.save();
+  res.json(user.addresses);
+};

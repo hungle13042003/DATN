@@ -47,6 +47,21 @@ export const getAllCategories = async (req, res) => {
   res.json(categories);
 };
 
+// Lấy sản phẩm bán chạy
+export const getBestSellerProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ isBestSeller: true })
+      .populate("category")
+      .sort({ createdAt: -1 });
+
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy sản phẩm bán chạy" });
+  }
+};
+
+
+
 /* ================= ADMIN ================= */
 
 // Thêm danh mục

@@ -12,6 +12,7 @@ import {
   updateProduct,
   deleteProduct,
   updateStock,
+  getBestSellerProducts,
 } from "../controllers/productController.js";
 
 import { verifyToken, isAdmin } from "../middlewares/authMiddleware.js";
@@ -21,9 +22,13 @@ const router = express.Router();
 /* ===== USER ===== */
 router.get("/products", getAllProducts);
 router.get("/products/search", searchProducts);
+// 👉 SẢN PHẨM BÁN CHẠY
+router.get("/bestseller", getBestSellerProducts);
 router.get("/products/:id", getProductById);
 router.get("/products/category/:categoryId", getProductsByCategory);
 router.get("/categories", getAllCategories);
+
+
 
 /* ===== ADMIN ===== */
 router.post("/admin/categories", verifyToken, isAdmin, createCategory);

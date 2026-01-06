@@ -282,7 +282,7 @@ const products = [
     categoryName: "Áo Khoác",
     price: 800000,
     images: [
-      "/uploads/products/aokhoac_vietnam_do.png",
+      "/uploads/products/aokhoac_Vietnam_do.png",
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ"],

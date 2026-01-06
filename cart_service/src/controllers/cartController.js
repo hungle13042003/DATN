@@ -6,7 +6,7 @@ import Cart from "../models/Cart.js";
 // ===============================
 export const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.user.id })
+    const cart = await Cart.findOne({ userId: req.user.userid })
       .populate("items.productId");
 
     return res.json(cart || { items: [] });
@@ -23,7 +23,7 @@ export const addToCart = async (req, res) => {
   const { productId, quantity } = req.body;
 
   try {
-    let cart = await Cart.findOne({ userId: req.user.id });
+    let cart = await Cart.findOne({ userId: req.user.userid });
 
     if (!cart) {
       // tạo giỏ mới
@@ -61,7 +61,7 @@ export const updateQuantity = async (req, res) => {
   const { productId, quantity } = req.body;
 
   try {
-    const cart = await Cart.findOne({ userId: req.user.id });
+    const cart = await Cart.findOne({ userId: req.user.userid });
 
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
@@ -86,7 +86,7 @@ export const removeItem = async (req, res) => {
   const { productId } = req.params;
 
   try {
-    const cart = await Cart.findOne({ userId: req.user.id });
+    const cart = await Cart.findOne({ userId: req.user.userid });
 
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
@@ -107,7 +107,7 @@ export const removeItem = async (req, res) => {
 // ===============================
 export const clearCart = async (req, res) => {
   try {
-    await Cart.findOneAndDelete({ userId: req.user.id });
+    await Cart.findOneAndDelete({ userId: req.user.userid });
     res.json({ message: "Cart cleared" });
   } catch (err) {
     return res.status(500).json({ message: err.message });
