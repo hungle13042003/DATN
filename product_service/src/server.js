@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 
-// 👉 BẮT BUỘC CHO __dirname (ESM)
+// fix __dirname cho ESM
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -13,14 +13,17 @@ connectDB();
 
 const app = express();
 
-// 👉 fix __dirname cho ESM
+// 👉 fix __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json());
 
-// 👉 expose đúng thư mục src/uploads
+/**
+ * EXPOSE THƯ MỤC UPLOAD ẢNH
+ * URL: http://localhost:3002/uploads/products/xxx.jpg
+ */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api", productRoutes);

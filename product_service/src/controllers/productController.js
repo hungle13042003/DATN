@@ -135,3 +135,35 @@ export const updateStock = async (req, res) => {
 
   res.json(product);
 };
+
+
+export const getProductsByIds = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    // Validate
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Danh sách productId không hợp lệ",
+      });
+    }
+
+    // Lấy sản phẩm theo danh sách ID
+    const products = await Product.find({
+      _id: { $in: ids },
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    console.error("getProductsByIds error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi server khi lấy sản phẩm",
+    });
+  }
+};

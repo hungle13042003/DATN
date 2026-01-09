@@ -576,12 +576,11 @@ const products = [
     categoryName: "Đồng Hồ Nữ",
     price: 2000000,
     images: [
-        "/uploads/products/donghonam_GoGuey_den.png",
-        "/uploads/products/donghonam_GoGuey_trang.png",
-        "/uploads/products/donghonam_GoGuey_tim.png",
+        "/uploads/products/donghonu_GoGoey_den.png",
+        "/uploads/products/donghonu_GoGoey_tim.png",
     ],
     sizes: ["16", "18", "20"],
-    colors: ["Đen", "Trắng", "Tím"],
+    colors: ["Đen", "Tím"],
     quantity: 50,
   },
 
@@ -591,7 +590,7 @@ const products = [
     categoryName: "Đồng Hồ Nữ",
     price: 2200000,
     images: [
-        "/uploads/products/donghonam_Madocy_trang.png",
+        "/uploads/products/donghonu_Madocy_trang.png",
     ],
     sizes: ["16", "18", "20"],
     colors: ["Trắng"],
@@ -604,8 +603,8 @@ const products = [
     categoryName: "Đồng Hồ Nữ",
     price: 1900000,
     images: [
-        "/uploads/products/donghonam_Olevs_trang.png",
-        "/uploads/products/donghonam_Olevs_xanh.png",
+        "/uploads/products/donghonu_Olevs_trang.png",
+        "/uploads/products/donghonu_Olevs_xanh.png",
     ],
     sizes: ["16", "18", "20"],
     colors: ["Trắng", "Xanh"],
