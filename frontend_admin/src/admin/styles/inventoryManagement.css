@@ -1,0 +1,103 @@
+.inventory-container {
+  padding: 20px;
+}
+
+.inventory-container h2 {
+  margin-bottom: 16px;
+}
+
+/* FILTER */
+.inventory-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.inventory-filter select,
+.inventory-search {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  min-width: 220px;
+}
+
+/* TABLE */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.inventory-table th,
+.inventory-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.inventory-table th {
+  background: #f5f5f5;
+}
+
+.inventory-table button {
+  padding: 6px 12px;
+  border: none;
+  background: #1677ff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inventory-table button:hover {
+  background: #0958d9;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+}
+
+.modal input {
+  width: 100%;
+  padding: 8px;
+  margin: 12px 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-primary {
+  background: #1677ff;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #0958d9;
+}

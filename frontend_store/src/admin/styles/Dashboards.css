@@ -1,0 +1,93 @@
+.dashboard {
+  padding: 24px;
+}
+
+/* ===== STAT GRID ===== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.stat-card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* ===== ICON ===== */
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+
+/* ICON COLORS */
+.stat-icon.revenue {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.stat-icon.orders {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.stat-icon.success {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.stat-icon.cancel {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* ===== CHART GRID ===== */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+}
+
+.chart-card h4 {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1000px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}

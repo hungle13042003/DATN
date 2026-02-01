@@ -1,0 +1,99 @@
+/* ===== FOOTER ===== */
+
+.footer {
+  background-color: #1a0b12;
+  color: #a08090;
+  padding: 60px 20px 20px;
+}
+
+.footer-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+/* ===== BRAND ===== */
+.footer-brand .brand-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.footer-brand .material-symbols-outlined {
+  font-size: 28px;
+  color: #f97316;
+}
+
+.footer-brand p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+/* ===== COLUMNS ===== */
+.footer-column h4 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.footer-column a {
+  color: #a08090;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-column a:hover {
+  color: #f97316;
+}
+
+/* ===== CONTACT ===== */
+.footer-contact li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.footer-contact .material-symbols-outlined {
+  font-size: 20px;
+  color: #f97316;
+}
+
+/* ===== BOTTOM ===== */
+.footer-bottom {
+  border-top: 1px solid #3a202b;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #896175;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .footer {
+    padding-top: 40px;
+  }
+
+  .footer-container {
+    gap: 30px;
+  }
+}

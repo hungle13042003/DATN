@@ -1,0 +1,157 @@
+.login-page {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f6f7;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+/* IMAGE */
+.login-image {
+  width: 65%;
+  position: relative;
+}
+
+.login-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* FORM */
+.login-form {
+  width: 35%;
+  padding: 60px;
+}
+
+.login-form h1 {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: #896175;
+  margin-bottom: 32px;
+}
+
+label {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #e6dbe0;
+}
+
+.icon,
+.toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.forgot {
+  text-align: right;
+  margin-bottom: 24px;
+}
+
+.forgot a {
+  font-size: 13px;
+  color: #896175;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 48px;
+  background: #ec1380;
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.divider {
+  text-align: center;
+  color: #896175;
+  margin: 20px 0;
+}
+
+.social-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.social-login button {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #e6dbe0;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #896175;
+  text-align: center;
+}
+
+.register a {
+  color: #ec1380;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .login-image {
+    display: none;
+  }
+
+  .login-form {
+    width: 100%;
+    padding: 40px;
+  }
+}

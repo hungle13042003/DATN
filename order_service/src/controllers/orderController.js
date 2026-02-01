@@ -1,177 +1,310 @@
 import Order from "../models/Order.js";
 import axios from "axios";
 
-/* ================= USER ================= */
+const INVENTORY_SERVICE_URL =
+  "http://inventory_service:3006/api/inventory";
 
-// Tạo đơn hàng
+const CART_SERVICE_URL =
+  "http://cart_service:3003/api/cart";
+
+/**
+ * ===============================
+ * CREATE ORDER
+ * ===============================
+ */
 export const createOrder = async (req, res) => {
   try {
+    const userId = req.user.id;
+    const storeId = req.storeId;
+
     const {
       items,
       shippingInfo,
       voucherCode,
-      totalAmount,
-      finalAmount,
       paymentMethod,
       shippingMethod,
+      totalAmount,
+      discountAmount,
+      finalAmount,
     } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ message: "Đơn hàng trống" });
     }
 
-    if (!shippingInfo?.fullName || !shippingInfo?.phone || !shippingInfo?.address) {
-      return res.status(400).json({ message: "Thiếu thông tin giao hàng" });
+    // 1️⃣ TRỪ TỒN KHO THEO SIZE
+    for (const item of items) {
+      try {
+        await axios.post(
+          `${INVENTORY_SERVICE_URL}/decrease`,
+          {
+            productId: item.productId,
+            size: item.size,        // 🔥 FIX
+            quantity: item.quantity,
+          },
+          {
+            headers: {
+              "x-store-id": storeId,
+            },
+          }
+        );
+      } catch (err) {
+        return res.status(400).json({
+          message:
+            err.response?.data?.message ||
+            "Không đủ hàng trong kho",
+        });
+      }
     }
 
+    // 2️⃣ TẠO ORDER
     const order = await Order.create({
-      userId: req.user.id,
+      orderCode: "ORD" + Date.now(),
+      userId,
+      storeId,
       items,
       shippingInfo,
       voucherCode,
-      totalAmount,
-      finalAmount,
-      discountAmount: totalAmount - finalAmount,
       paymentMethod,
       shippingMethod,
-      status: "PENDING",
+      totalAmount,
+      discountAmount,
+      finalAmount,
     });
 
-    res.status(201).json(order);
+    // 3️⃣ CLEAR CART
+    await axios.post(
+      `${CART_SERVICE_URL}/clear`,
+      {},
+      {
+        headers: {
+          Authorization: req.headers.authorization,
+          "x-store-id": storeId.toString(),
+        },
+      }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Đặt hàng thành công",
+      data: order,
+    });
   } catch (error) {
+    console.error("createOrder error:", error);
     res.status(500).json({
       message: "Lỗi tạo đơn hàng",
-      error: error.message,
     });
   }
 };
 
-// Lấy đơn hàng của user
+/**
+ * ===============================
+ * USER: MY ORDERS
+ * ===============================
+ */
 export const getMyOrders = async (req, res) => {
-  const orders = await Order.find({ userId: req.user.id }).sort({
-    createdAt: -1,
-  });
-  res.json(orders);
-};
-
-/* ================= ADMIN ================= */
-
-// Lấy tất cả đơn hàng
-export const getAllOrders = async (req, res) => {
-  const orders = await Order.find().sort({ createdAt: -1 });
-  res.json(orders);
-};
-
-// Cập nhật trạng thái đơn
-export const updateOrderStatus = async (req, res) => {
-  const { status } = req.body;
-
-  const order = await Order.findByIdAndUpdate(
-    req.params.id,
-    { status },
-    { new: true }
-  );
-
-  if (!order)
-    return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
-
-  res.json(order);
-};
-
-
-/* ================= OVERVIEW DASHBOARD ================= */
-export const getDashboardOverview = async (req, res) => {
   try {
-    const totalOrders = await Order.countDocuments();
+    const userId = req.user.id;
 
-    const completedOrders = await Order.countDocuments({
-      status: "COMPLETED",
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy đơn hàng" });
+  }
+};
+
+/**
+ * ===============================
+ * USER: ORDER DETAIL
+ * ===============================
+ */
+export const getOrderDetail = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+    }
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy chi tiết đơn hàng" });
+  }
+};
+
+/**
+ * ===============================
+ * ADMIN: ORDERS BY STORE
+ * ===============================
+ */
+export const getAllOrdersByStore = async (req, res) => {
+  try {
+    const storeId = req.storeId;
+
+    const orders = await Order.find({ storeId }).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy danh sách đơn hàng" });
+  }
+};
+
+/**
+ * ===============================
+ * ADMIN: UPDATE STATUS
+ * ===============================
+ */
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi cập nhật trạng thái" });
+  }
+};
+
+
+/**
+ * ===============================
+ * SUPER ADMIN / ADMIN: ALL ORDERS
+ * ===============================
+ */
+export const getAllOrdersSystem = async (req, res) => {
+  try {
+    const { storeId } = req.query;
+
+    const filter = {};
+    if (storeId) filter.storeId = storeId;
+
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    console.error("getAllOrdersSystem error:", error);
+    res.status(500).json({
+      message: "Lỗi lấy đơn hàng toàn hệ thống",
     });
+  }
+};
 
-    const cancelledOrders = await Order.countDocuments({
-      status: "CANCELLED",
-    });
+// /**
+//  * DASHBOARD STATISTICS
+//  */
+// export const getDashboardStats = async (req, res) => {
+//   try {
+//     const result = await Order.aggregate([
+//       {
+//         $match: { status: "COMPLETED" }
+//       },
+//       {
+//         $group: {
+//           _id: "$storeId",
+//           revenue: { $sum: "$finalAmount" },
+//           orders: { $sum: 1 }
+//         }
+//       }
+//     ]);
 
-    const revenueResult = await Order.aggregate([
-      { $match: { status: "COMPLETED" } },
+//     // ===== TÁCH RIÊNG TỪNG CỬA HÀNG =====
+//     const stores = result.map(item => ({
+//       storeId: item._id,
+//       totalRevenue: item.revenue,
+//       totalOrders: item.orders
+//     }));
+
+//     // ===== TỔNG HỆ THỐNG =====
+//     const systemTotal = {
+//       totalRevenue: stores.reduce((s, i) => s + i.totalRevenue, 0),
+//       totalOrders: stores.reduce((s, i) => s + i.totalOrders, 0)
+//     };
+
+//     res.json({
+//       system: systemTotal,
+//       stores
+//     });
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Dashboard error" });
+//   }
+// };
+
+export const getDashboardSummary = async (req, res) => {
+  try {
+    const stats = await Order.aggregate([
       {
         $group: {
           _id: null,
-          totalRevenue: { $sum: "$finalAmount" },
+          totalRevenue: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "COMPLETED"] }, "$finalAmount", 0],
+            },
+          },
+          totalOrders: { $sum: 1 },
+          completedOrders: {
+            $sum: { $cond: [{ $eq: ["$status", "COMPLETED"] }, 1, 0] },
+          },
+          canceledOrders: {
+            $sum: { $cond: [{ $eq: ["$status", "CANCELED"] }, 1, 0] },
+          },
         },
       },
     ]);
 
-    const totalRevenue =
-      revenueResult.length > 0
-        ? revenueResult[0].totalRevenue
-        : 0;
-
-    res.json({
-      totalOrders,
-      completedOrders,
-      cancelledOrders,
-      totalRevenue,
-    });
+    res.json(
+      stats[0] || {
+        totalRevenue: 0,
+        totalOrders: 0,
+        completedOrders: 0,
+        canceledOrders: 0,
+      }
+    );
   } catch (error) {
-    res.status(500).json({
-      message: "Lỗi thống kê tổng quan",
-      error: error.message,
-    });
+    console.error("Dashboard summary error:", error);
+    res.status(500).json({ message: "Dashboard summary error" });
   }
 };
 
-/* ================= DOANH THU THEO THÁNG ================= */
-export const getRevenueByMonth = async (req, res) => {
+export const getDashboardByStore = async (req, res) => {
   try {
-    const data = await Order.aggregate([
-      { $match: { status: "COMPLETED" } },
+    const stats = await Order.aggregate([
       {
         $group: {
-          _id: { $month: "$createdAt" },
-          revenue: { $sum: "$finalAmount" },
+          _id: "$storeId",
+          totalRevenue: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "COMPLETED"] }, "$finalAmount", 0],
+            },
+          },
+          totalOrders: { $sum: 1 },
+          completedOrders: {
+            $sum: { $cond: [{ $eq: ["$status", "COMPLETED"] }, 1, 0] },
+          },
+          canceledOrders: {
+            $sum: { $cond: [{ $eq: ["$status", "CANCELLED"] }, 1, 0] },
+          },
         },
       },
-      { $sort: { "_id": 1 } },
-    ]);
-
-    const result = data.map((item) => ({
-      month: `Tháng ${item._id}`,
-      revenue: item.revenue,
-    }));
-
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({
-      message: "Lỗi thống kê doanh thu",
-      error: error.message,
-    });
-  }
-};
-
-/* ================= SỐ ĐƠN THEO THÁNG ================= */
-export const getOrdersByMonth = async (req, res) => {
-  try {
-    const data = await Order.aggregate([
       {
-        $group: {
-          _id: { $month: "$createdAt" },
-          orders: { $sum: 1 },
+        $project: {
+          storeId: "$_id",
+          _id: 0,
+          totalRevenue: 1,
+          totalOrders: 1,
+          completedOrders: 1,
+          canceledOrders: 1,
         },
       },
-      { $sort: { "_id": 1 } },
     ]);
 
-    const result = data.map((item) => ({
-      month: `Tháng ${item._id}`,
-      orders: item.orders,
-    }));
-
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({
-      message: "Lỗi thống kê đơn hàng",
-      error: error.message,
-    });
+    res.json(stats);
+  } catch (err) {
+    console.error("Dashboard error:", err);
+    res.status(500).json({ message: "Dashboard error" });
   }
 };

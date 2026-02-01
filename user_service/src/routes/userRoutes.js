@@ -2,39 +2,46 @@ import express from "express";
 import {
   register,
   login,
-  getUsers,
-  deleteUser,
   getProfile,
   updateProfile,
-  adminUpdateUser,
-  getAddresses,
-  addAddress,
-  deleteAddress,
-  setDefaultAddress
+  getUsers,
+  deactivateUser,
+  adminLogin,
+  getUserById,
+  updateUserByAdmin
 } from "../controllers/userController.js";
 
-import { protect, admin } from "../middlewares/authMiddleware.js";
+import { verifyToken, isAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Auth
-router.post("/register", register);
-router.post("/login", login);
+/* AUTH */
+router.post("/auth/register", register);
+router.post("/auth/login", login);
 
-// User
-router.get("/profile", protect, getProfile);
-router.put("/profile", protect, updateProfile);
+router.post("/admin/auth/login", adminLogin);
 
-// Admin
-router.get("/", protect, admin, getUsers);
-router.delete("/:id", protect, admin, deleteUser);
-router.put("/:id", protect, admin, adminUpdateUser);
+/* USER */
+router.get("/users/me", verifyToken, getProfile);
+router.put("/users/me", verifyToken, updateProfile);
 
-// ===== ADDRESS BOOK =====
-router.get("/addresses", protect, getAddresses);
-router.post("/addresses", protect, addAddress);
-router.delete("/addresses/:id", protect, deleteAddress);
-router.put("/addresses/:id/default", protect, setDefaultAddress);
+/* ADMIN */
+router.get("/admin/users", verifyToken, isAdmin, getUsers);
+router.put("/admin/users/:id/deactivate", verifyToken, isAdmin, deactivateUser);
+
+router.get(
+  "/admin/users/:id",
+  verifyToken,
+  isAdmin,
+  getUserById
+);
+
+router.put(
+  "/admin/users/:id",
+  verifyToken,
+  isAdmin,
+  updateUserByAdmin
+);
 
 
 export default router;

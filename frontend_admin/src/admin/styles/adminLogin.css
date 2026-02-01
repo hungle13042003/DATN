@@ -1,0 +1,120 @@
+/* ===== PAGE ===== */
+.admin-login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== CONTAINER ===== */
+.admin-login-box {
+  width: 900px;
+  height: 420px;
+  display: flex;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== LEFT IMAGE ===== */
+.admin-login-banner {
+  flex: 1;
+  background: url("https://images.unsplash.com/photo-1551288049-bebda4e38f71")
+    center/cover no-repeat;
+  position: relative;
+}
+
+.admin-login-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.banner-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.banner-content h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.banner-content p {
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* ===== RIGHT FORM ===== */
+.admin-login-form {
+  flex: 1;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.admin-login-form h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #0f172a;
+}
+
+.admin-login-form input {
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.admin-login-form input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.admin-login-form button {
+  margin-top: 8px;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.admin-login-form button:hover {
+  background: #1d4ed8;
+}
+
+/* ===== ERROR ===== */
+.admin-login-error {
+  color: #dc2626;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .admin-login-box {
+    flex-direction: column;
+    height: auto;
+    width: 90%;
+  }
+
+  .admin-login-banner {
+    height: 180px;
+  }
+}

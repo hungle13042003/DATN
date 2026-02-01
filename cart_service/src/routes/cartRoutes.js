@@ -1,24 +1,22 @@
 import express from "express";
 import {
   addToCart,
-  getCart,
-  updateQuantity,
-  removeItem,
+  getCartDetail,
+  updateCartItem,
+  removeCartItem,
   clearCart,
-  getCartDetail
 } from "../controllers/cartController.js";
 
-import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
+import { attachStore } from "../middlewares/attachStore.js";
 
 const router = express.Router();
 
 
-// User phải login mới dùng giỏ hàng
-router.get("/", authMiddleware, getCart);
-router.post("/", authMiddleware, addToCart);
-router.put("/", authMiddleware, updateQuantity);
-router.delete("/:productId", authMiddleware, removeItem);
-router.delete("/clear", authMiddleware, clearCart);
-router.get("/test", authMiddleware, getCartDetail);
+router.post("/add", verifyToken, attachStore, addToCart);
+router.get("/test", verifyToken,attachStore, getCartDetail);
+router.put("/update", verifyToken, attachStore, updateCartItem);
+router.delete("/remove", verifyToken,attachStore, removeCartItem);
+router.post("/clear", verifyToken, attachStore, clearCart);
 
 export default router;

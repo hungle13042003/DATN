@@ -7,6 +7,16 @@ import Product from "../models/Product.js";
 
 dotenv.config();
 
+/* ================= HELPER ================= */
+const slugify = (text) =>
+  text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+
+
 /* ================= CATEGORY DATA ================= */
 const categories = [
   { name: "Áo Hoodie", description: "Các loại áo hoodie nam nữ" },
@@ -23,8 +33,6 @@ const categories = [
   { name: "Đồng Hồ Nam", description: "Đồng hồ dành cho nam" },
   { name: "Đồng Hồ Nữ", description: "Đồng hồ dành cho nữ" },
 
-//   { name: "Giày Nam", description: "Giày dành cho nam" },
-//   { name: "Giày Nữ", description: "Giày dành cho nữ" },
   { name: "Giày Thể Thao", description: "Giày thể thao" },
 ];
 
@@ -46,7 +54,6 @@ const products = [
     ],
     sizes: ["S", "M", "L", "XL"],
     colors: ["Be", "Xám"],
-    quantity: 100,
   },
 
   {
@@ -60,7 +67,7 @@ const products = [
     ],
     sizes: ["S", "M", "L", "XL"],
     colors: ["Hồng đen", "Trắng xanh"],
-    quantity: 100,
+
   },
 
   {
@@ -75,7 +82,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Trắng", "Xám"],
-    quantity: 80,
+
   },
 
   {
@@ -89,7 +96,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Kem"],
-    quantity: 80,
+
   },
   
   {
@@ -102,7 +109,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Xanh"],
-    quantity: 80,
+
   },
 
   {
@@ -117,7 +124,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Cà phê", "Nâu", "Rêu"],
-    quantity: 80,
+
   },
 
   {
@@ -131,7 +138,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Be", "Đen"],
-    quantity: 150,
+
   },
 
   {
@@ -145,7 +152,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Be", "Đen"],
-    quantity: 130,
+
   },
 
   {
@@ -159,7 +166,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đen", "Trắng"],
-    quantity: 130,
+
   },
 
   {
@@ -173,7 +180,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đen", "Trắng"],
-    quantity: 130,
+
   },
 
   {
@@ -188,7 +195,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ", "Trắng", "Xanh"],
-    quantity: 130,
+
   },
 
   {
@@ -203,7 +210,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ", "Hồng", "Tím"],
-    quantity: 130,
+
   },
 
   {
@@ -218,7 +225,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ", "Xanh"],
-    quantity: 100,
+
   },
 
   {
@@ -232,7 +239,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ", "Trắng"],
-    quantity: 100,
+
   },
 
   {
@@ -245,7 +252,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Trắng"],
-    quantity: 100,
+
   },
 
   {
@@ -259,7 +266,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đen", "Trắng"],
-    quantity: 80,
+
   },
 
   {
@@ -273,7 +280,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đen", "Trắng"],
-    quantity: 80,
+
   },
 
   {
@@ -286,7 +293,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ"],
-    quantity: 80,
+
   },
 
   {
@@ -300,7 +307,7 @@ const products = [
     ],
     sizes: ["S", "M", "L"],
     colors: ["Đỏ", "Xanh"],
-    quantity: 100,
+
   },
 
   {
@@ -313,7 +320,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Xanh"],
-    quantity: 60,
+
   },
 
   {
@@ -328,7 +335,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Hồng", "Xanh"],
-    quantity: 60,
+
   },
 
   {
@@ -342,7 +349,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Trắng", "Xanh"],
-    quantity: 80,
+
   },
 
   {
@@ -357,7 +364,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Trắng", "Xanh"],
-    quantity: 100,
+
   },
 
   {
@@ -371,7 +378,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Trắng"],
-    quantity: 100,
+
   },
 
   {
@@ -385,7 +392,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Xám"],
-    quantity: 100,
+
   },
 
   {
@@ -399,7 +406,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Be", "Đen"],
-    quantity: 100,
+
   },
 
   {
@@ -413,7 +420,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Trắng"],
-    quantity: 100,
+
   },
 
   {
@@ -428,7 +435,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Be", "Nâu", "Xám"],
-    quantity: 110,
+
   },
 
   {
@@ -442,7 +449,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Trắng"],
-    quantity: 110,
+
   },
 
   {
@@ -455,7 +462,7 @@ const products = [
     ],
     sizes: ["29", "30", "31", "32"],
     colors: ["Đen"],
-    quantity: 90,
+
   },
 
   {
@@ -470,7 +477,7 @@ const products = [
     ],
     sizes: ["29", "30", "31", "32"],
     colors: ["Đen", "Bạc", "Trắng"],
-    quantity: 90,
+
   },
 
   {
@@ -484,7 +491,7 @@ const products = [
     ],
     sizes: ["29", "30", "31", "32"],
     colors: ["Xanh", "Bạc"],
-    quantity: 90,
+
   },
 
   {
@@ -498,7 +505,7 @@ const products = [
     ],
     sizes: ["29", "30", "31", "32"],
     colors: ["Xanh", "Đen"],
-    quantity: 90,
+
   },
 
   {
@@ -512,7 +519,7 @@ const products = [
     ],
     sizes: ["29", "30", "31", "32"],
     colors: ["Xanh", "Ghi"],
-    quantity: 90,
+
   },
 
   {
@@ -526,7 +533,7 @@ const products = [
     ],
     sizes: ["M", "L", "XL"],
     colors: ["Đen", "Trắng"],
-    quantity: 120,
+
   },
 
   {
@@ -537,7 +544,7 @@ const products = [
     images: ["/uploads/products/donghocasio.png"],
     sizes: ["20"],
     colors: ["Đen"],
-    quantity: 40,
+
   },
 
   {
@@ -552,7 +559,7 @@ const products = [
     ],
     sizes: ["18", "20", "22"],
     colors: ["Đen", "Trắng", "Vàng"],
-    quantity: 50,
+
   },
 
   {
@@ -567,7 +574,7 @@ const products = [
     ],
     sizes: ["18", "20", "22"],
     colors: ["Nâu", "Trắng", "Vàng"],
-    quantity: 50,
+
   },
 
    {
@@ -594,7 +601,7 @@ const products = [
     ],
     sizes: ["16", "18", "20"],
     colors: ["Trắng"],
-    quantity: 50,
+
   },
 
   {
@@ -608,7 +615,7 @@ const products = [
     ],
     sizes: ["16", "18", "20"],
     colors: ["Trắng", "Xanh"],
-    quantity: 50,
+
   },
 
   {
@@ -621,7 +628,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Trắng"],
-    quantity: 70,
+
   },
 
   {
@@ -635,7 +642,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Đen", "Trắng"],
-    quantity: 70,
+
   },
 
   {
@@ -650,7 +657,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Đen", "Xám", "Xanh"],
-    quantity: 70,
+
   },
 
   {
@@ -664,7 +671,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Xanh"],
-    quantity: 70,
+
   },
 
   {
@@ -679,7 +686,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Xanh", "Hồng", "Trắng"],
-    quantity: 70,
+
   },
 
   {
@@ -693,7 +700,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Xanh", "Hồng"],
-    quantity: 70,
+
   },
 
   {
@@ -707,7 +714,7 @@ const products = [
     ],
     sizes: ["38", "39", "40", "41", "42"],
     colors: ["Trắng", "Xám"],
-    quantity: 70,
+
   },
 ];
 
@@ -719,13 +726,23 @@ const runSeed = async () => {
     await Category.deleteMany();
     await Product.deleteMany();
 
-    const insertedCategories = await Category.insertMany(categories);
+    // Insert categories (có slug)
+    const insertedCategories = await Category.insertMany(
+      categories.map((c) => ({
+        name: c.name,
+        slug: slugify(c.name),
+        description: c.description,
+        isActive: true,
+      }))
+    );
 
+    // Map categoryName -> ObjectId
     const categoryMap = {};
     insertedCategories.forEach((c) => {
       categoryMap[c.name] = c._id;
     });
 
+    // Format products (KHÔNG quantity)
     const finalProducts = products.map((p) => ({
       name: p.name,
       description: p.description,
@@ -734,7 +751,8 @@ const runSeed = async () => {
       images: p.images,
       sizes: p.sizes,
       colors: p.colors,
-      quantity: p.quantity,
+      isBestSeller: p.isBestSeller || false,
+      isActive: true,
     }));
 
     await Product.insertMany(finalProducts);

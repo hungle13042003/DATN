@@ -1,37 +1,47 @@
 import mongoose from "mongoose";
 
-const addressSchema = new mongoose.Schema({
-  fullName: String,
-  phone: String,
-  address: String,
-  isDefault: {
-    type: Boolean,
-    default: false
-  }
-});
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    },
 
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: {
-    type: String,
-    unique: true
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+
+    phone: {
+      type: String,
+      required: true,
+      unique: true
+    },
+
+    password: {
+      type: String,
+      required: true
+    },
+
+    role: {
+      type: String,
+      enum: ["admin", "customer"],
+      default: "customer"
+    },
+
+    storeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      index: true
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true
+    }
   },
-  password: String,
-  phone: String,
-  role: {
-    type: String,
-    enum: ["user", "admin"],
-    default: "user"
-  },
-
-  // địa chỉ mặc định (đang dùng)
-  address: String,
-
-  // ✅ SỔ ĐỊA CHỈ
-  addresses: [addressSchema]
-
-}, {
-  timestamps: true
-});
+  { timestamps: true }
+);
 
 export default mongoose.model("User", userSchema);

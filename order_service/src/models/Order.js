@@ -1,23 +1,55 @@
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+/* ================== ORDER ITEM ================== */
+const orderItemSchema = new mongoose.Schema(
   {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    productId: mongoose.Schema.Types.ObjectId,
+    name: String,
+    price: Number,
+
+    size: {
+      type: String,
       required: true,
     },
 
-    items: [
-      {
-        productId: mongoose.Schema.Types.ObjectId,
-        name: String,
-        price: Number,
-        quantity: Number,
-        image: String,
-      },
-    ],
+    color: {
+      type: String,
+      required: true,
+    },
 
+    quantity: Number,
+    images: [String],
+  },
+  { _id: false }
+);
+/* ================== ORDER ================== */
+const orderSchema = new mongoose.Schema(
+  {
+    orderCode: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+
+    // 👉 STORE LẤY TỪ TOKEN (ObjectId)
+    storeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Store",
+    },
+
+    items: {
+      type: [orderItemSchema],
+      required: true,
+    },
+
+    /* ===== SHIPPING ===== */
     shippingInfo: {
       fullName: {
         type: String,
@@ -31,21 +63,39 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      note: String,
     },
 
     voucherCode: String,
 
-    totalAmount: Number,
-    finalAmount: Number,
-    discountAmount: Number,
+    paymentMethod: {
+      type: String,
+      enum: ["COD", "VNPAY"],
+      default: "COD",
+    },
 
-    paymentMethod: String,
-    shippingMethod: String,
+    shippingMethod: {
+      type: String,
+      default: "STANDARD",
+    },
 
     status: {
       type: String,
-      enum: ["PENDING", "SHIPPING", "COMPLETED", "CANCELLED"],
+      enum: ["PENDING", "CONFIRMED", "SHIPPING", "COMPLETED", "CANCELLED"],
       default: "PENDING",
+    },
+
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+    finalAmount: {
+      type: Number,
+      required: true,
     },
   },
   { timestamps: true }

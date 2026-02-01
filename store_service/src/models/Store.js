@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const storeSchema = new mongoose.Schema(
   {
+    code: {
+      type: String,
+      required: true,
+      unique: true
+    },
+
     name: {
       type: String,
       required: true

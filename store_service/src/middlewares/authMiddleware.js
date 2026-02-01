@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+// Xác thực token
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -11,13 +12,14 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { userId, role }
+    req.user = decoded; // { id, role }
     next();
   } catch (error) {
-    res.status(401).json({ message: "Token không hợp lệ" });
+    return res.status(401).json({ message: "Token không hợp lệ" });
   }
 };
 
+// Chỉ admin
 export const isAdmin = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Không có quyền admin" });

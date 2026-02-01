@@ -1,0 +1,325 @@
+.profile-page {
+  background: #f6f7fb;
+  min-height: 100vh;
+  padding: 30px 0;
+}
+
+.profile-loading {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.profile-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+}
+
+/* ===== SIDEBAR ===== */
+.profile-sidebar {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-role {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+/* ===== CONTENT ===== */
+.profile-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.profile-card h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ===== VIEW MODE ===== */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.edit-btn {
+  margin-top: 20px;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.edit-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== EDIT MODE ===== */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.form-row label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.form-row input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-row input:disabled {
+  background: #f3f4f6;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.save-btn {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===================================================== */
+/* ===== ADDRESS BOOK (FORM RIÊNG – BEAUTIFIED) ===== */
+/* ===================================================== */
+
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.address-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.add-address-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-address-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+/* ===== LIST ===== */
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== CARD ===== */
+.address-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: all 0.2s ease;
+}
+
+.address-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  border-color: #d1d5db;
+}
+
+.address-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.address-card p b {
+  font-size: 15px;
+  color: #111827;
+}
+
+/* ===== BADGE ===== */
+.default-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* ===== ACTIONS ===== */
+.address-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.address-actions button {
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
+  transition: all 0.15s ease;
+}
+
+.address-actions button:hover {
+  background: #e5e7eb;
+}
+
+.address-actions .danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.address-actions .danger:hover {
+  background: #fecaca;
+}
+
+/* ================= VOUCHER CARD ================= */
+.address-card {
+  position: relative;
+  background: linear-gradient(180deg, #ffffff, #fafbff);
+  border-radius: 16px;
+  padding: 18px 22px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+/* gradient viền nhẹ */
+.address-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, #3b82f6, #a855f7);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* hover nổi bật */
+.address-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(59, 130, 246, 0.15);
+}
+
+/* ================= TEXT ================= */
+.address-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.address-card p b {
+  font-size: 15px;
+  color: #111827;
+}
+
+/* ================= BADGE ================= */
+.default-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+/* ================= VOUCHER TYPE (OPTIONAL) ================= */
+/* nếu sau này bạn gắn class percent / money thì đã có sẵn style */
+
+.address-card.percent::after {
+  content: "%";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  font-size: 90px;
+  font-weight: 800;
+  color: rgba(59, 130, 246, 0.08);
+}
+
+.address-card.money::after {
+  content: "₫";
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  font-size: 90px;
+  font-weight: 800;
+  color: rgba(34, 197, 94, 0.08);
+}

@@ -2,12 +2,13 @@ import Store from "../models/Store.js";
 
 /* ================= USER ================= */
 
-// Lấy danh sách cửa hàng
+// Lấy danh sách cửa hàng đang hoạt động
 export const getAllStores = async (req, res) => {
   try {
     const stores = await Store.find({ isActive: true }).sort({
       createdAt: -1
     });
+
     res.json(stores);
   } catch (error) {
     res.status(500).json({
@@ -22,14 +23,14 @@ export const getStoreById = async (req, res) => {
   try {
     const store = await Store.findById(req.params.id);
 
-    if (!store) {
+    if (!store || !store.isActive) {
       return res.status(404).json({ message: "Không tìm thấy cửa hàng" });
     }
 
     res.json(store);
   } catch (error) {
     res.status(500).json({
-      message: "Lỗi lấy chi tiết cửa hàng",
+      message: "Lỗi lấy thông tin cửa hàng",
       error: error.message
     });
   }
@@ -37,13 +38,13 @@ export const getStoreById = async (req, res) => {
 
 /* ================= ADMIN ================= */
 
-// Thêm cửa hàng
+// Tạo cửa hàng
 export const createStore = async (req, res) => {
   try {
     const store = await Store.create(req.body);
     res.status(201).json(store);
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       message: "Lỗi tạo cửa hàng",
       error: error.message
     });
@@ -65,15 +66,15 @@ export const updateStore = async (req, res) => {
 
     res.json(store);
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       message: "Lỗi cập nhật cửa hàng",
       error: error.message
     });
   }
 };
 
-// Xóa cửa hàng (soft delete)
-export const deleteStore = async (req, res) => {
+// Ngừng hoạt động cửa hàng (soft delete)
+export const deactivateStore = async (req, res) => {
   try {
     const store = await Store.findByIdAndUpdate(
       req.params.id,
@@ -85,10 +86,10 @@ export const deleteStore = async (req, res) => {
       return res.status(404).json({ message: "Không tìm thấy cửa hàng" });
     }
 
-    res.json({ message: "Đã ngừng hoạt động cửa hàng" });
+    res.json({ message: "Cửa hàng đã ngừng hoạt động" });
   } catch (error) {
     res.status(500).json({
-      message: "Lỗi xóa cửa hàng",
+      message: "Lỗi ngừng hoạt động cửa hàng",
       error: error.message
     });
   }

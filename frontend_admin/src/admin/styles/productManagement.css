@@ -1,0 +1,409 @@
+/* ================= GLOBAL ================= */
+.product-page {
+  padding: 24px;
+  background: #f5f6fa;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.product-page h2 {
+  margin-bottom: 24px;
+  font-size: 24px;
+}
+
+/* ================= HEADER (LIST) ================= */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.page-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.page-actions input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  width: 240px;
+}
+
+.btn-add {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-add:hover {
+  opacity: 0.9;
+}
+
+/* ================= TABLE ================= */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.product-table th,
+.product-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.product-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.product-table tr:hover {
+  background: #f9fafb;
+}
+
+.product-table img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.product-table button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.product-table button:first-child {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-delete {
+  background: #ef4444 !important;
+  color: white;
+}
+
+.product-table button:hover {
+  opacity: 0.85;
+}
+
+/* ================= CREATE / EDIT GRID ================= */
+.product-create-grid {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 24px;
+}
+
+/* ================= FORM CARD ================= */
+.product-form-box {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.product-form-box input,
+.product-form-box select,
+.product-form-box textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.product-form-box textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ================= IMAGE FORM ================= */
+.image-form h4 {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.image-form input[type="file"] {
+  padding: 14px;
+  border: 2px dashed #c7c7c7;
+  border-radius: 12px;
+  width: 100%;
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.image-form input[type="file"]:hover {
+  background: #f1f1f1;
+}
+
+.image-form img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+/* ================= ACTION BUTTONS ================= */
+.form-actions {
+  max-width: 1200px;
+  margin: 30px auto 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-actions button {
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.form-actions button:first-child {
+  background: #22c55e;
+  color: white;
+}
+
+.form-actions button:last-child {
+  background: #9ca3af;
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .product-create-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* ===== ACTION ICONS ===== */
+.action-icons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.action-icon {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.action-icon.edit {
+  color: #2563eb; /* xanh */
+}
+
+.action-icon.delete {
+  color: #dc2626; /* đỏ */
+}
+
+.action-icon:hover {
+  opacity: 0.75;
+}
+
+.image-preview {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.image-box {
+  position: relative;
+}
+
+.image-box img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.remove-img {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: #ef4444;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+/* ================= OPTION GROUP ================= */
+.option-group {
+  margin-top: 22px;
+}
+
+.option-group > label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #111827;
+}
+
+/* ================= OPTION LIST ================= */
+.option-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* ================= OPTION ITEM ================= */
+.option-item {
+  min-width: 44px;
+  height: 40px;
+  padding: 0 16px;
+
+  border-radius: 999px;
+  border: 1.5px solid #d1d5db;
+  background: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+/* Ẩn checkbox */
+.option-item input {
+  display: none;
+}
+
+/* Hover */
+.option-item:hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
+/* Checked */
+.option-item:has(input:checked) {
+  background: #f5f3ff;
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
+/* ================= SIZE DẠNG SỐ ================= */
+.option-item.number {
+  min-width: 48px;
+}
+
+/* ================= INPUT SIZE / COLOR KHÁC ================= */
+.option-group input[type="text"] {
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+
+  border-radius: 12px;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+
+  font-size: 14px;
+  color: #111827;
+}
+
+.option-group input[type="text"]::placeholder {
+  color: #9ca3af;
+}
+
+.option-group input[type="text"]:focus {
+  outline: none;
+  border-color: #7c3aed;
+}
+
+/* ================= CHIP LIST ================= */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ================= CHIP ================= */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  border-radius: 999px;
+
+  background: #ecfeff;
+  color: #0369a1;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ================= CHIP DELETE ================= */
+.chip button {
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  border: none;
+
+  background: #bae6fd;
+  color: #0369a1;
+
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+
+  cursor: pointer;
+}
+
+.chip button:hover {
+  background: #7dd3fc;
+}

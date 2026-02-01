@@ -1,0 +1,115 @@
+/* ================= CATEGORY PAGE ================= */
+.category-page {
+  padding: 60px 80px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+/* TITLE */
+.category-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #111827;
+}
+
+/* LOADING / EMPTY */
+.category-loading,
+.category-empty {
+  text-align: center;
+  padding: 60px 0;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* GRID */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 28px;
+}
+
+/* ================= PRODUCT CARD ================= */
+.category-card-product {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card-product:hover {
+  transform: translateY(-6px);
+}
+
+/* IMAGE */
+.category-card-product img {
+  width: 100%;
+  height: 300px;              /* KHUNG ẢNH CỐ ĐỊNH */
+  object-fit: contain;        /* KHÔNG MÉO ẢNH */
+  background: #f8f8f8;
+  padding: 16px;
+}
+
+/* INFO */
+.category-product-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.category-product-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  min-height: 42px;
+}
+
+/* PRICE */
+.category-product-price {
+  color: #f97316;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+/* BUTTON */
+.category-detail-btn {
+  margin-top: auto;
+  padding: 10px 0;
+  border: none;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.category-detail-btn:hover {
+  background: #f97316;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .category-page {
+    padding: 50px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .category-page {
+    padding: 40px 24px;
+  }
+
+  .category-title {
+    font-size: 24px;
+  }
+
+  .category-card-product img {
+    height: 260px;
+  }
+}

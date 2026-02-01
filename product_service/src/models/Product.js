@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+    },
+
     description: String,
 
     category: {
@@ -11,19 +15,23 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    price: { type: Number, required: true },
+    price: {
+      type: Number,
+      required: true,
+    },
+
     images: [String],
     sizes: [String],
     colors: [String],
 
-    quantity: {
-      type: Number,
-      default: 0,
-    },
-    // 👉 SẢN PHẨM BÁN CHẠY
     isBestSeller: {
       type: Boolean,
       default: false,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

@@ -1,0 +1,42 @@
+/* ================= RESET CƠ BẢN ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================= BODY ================= */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  background-color: #f9f9f9;
+  color: #111;
+
+  /* ⬇️ đẩy toàn bộ nội dung xuống dưới header */
+  padding-top: 72px;
+}
+
+/* ================= LINK ================= */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ================= BUTTON ================= */
+button {
+  font-family: inherit;
+  outline: none;
+}
+
+/* ================= INPUT ================= */
+input {
+  font-family: inherit;
+}
+
+/* ================= MAIN CONTENT (OPTIONAL) ================= */
+/* Nếu sau này bạn muốn bọc content cho gọn */
+.main-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}

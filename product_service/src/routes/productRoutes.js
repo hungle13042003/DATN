@@ -1,58 +1,84 @@
 import express from "express";
 import {
   getAllProducts,
-  getProductById,
-  searchProducts,
-  getProductsByCategory,
-  getAllCategories,
-  createCategory,
-  updateCategory,
-  deleteCategory,
+  getProductDetail,
+  getBestSellerProducts,
+  getCategories,
   createProduct,
   updateProduct,
   deleteProduct,
-  updateStock,
-  getBestSellerProducts,
-  getProductsByIds
+  getProductsByIds,
+  searchProducts,
+  getAllCategoriesAdmin,
+  createCategoryAdmin,
+  updateCategoryAdmin,
+  deleteCategoryAdmin
 } from "../controllers/productController.js";
 
-import { verifyToken, isAdmin } from "../middlewares/authMiddleware.js";
-import upload from "../middlewares/upload.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
+import { adminMiddleware } from "../middlewares/adminMiddleware.js";
+import { uploadProductImages } from "../middlewares/uploadProductImage.js";
 
 const router = express.Router();
 
-/* ===== USER ===== */
+/* PUBLIC */
 router.get("/products", getAllProducts);
-router.get("/products/search", searchProducts);
-router.get("/bestseller", getBestSellerProducts);
-router.get("/products/:id", getProductById);
-router.get("/products/category/:categoryId", getProductsByCategory);
-router.get("/categories", getAllCategories);
+router.get("/products/best-seller", getBestSellerProducts);
+router.get("/products/:id", getProductDetail);
+router.get("/categories", getCategories);
+router.get("/search", searchProducts);
+/* INTERNAL */
 router.post("/by-ids", getProductsByIds);
 
-/* ===== ADMIN UPLOAD IMAGE ===== */
+/* ADMIN */
+router.post("/admin/products", verifyToken, adminMiddleware, createProduct);
+router.put("/admin/products/:id", verifyToken, adminMiddleware, updateProduct);
+router.delete("/admin/products/:id", verifyToken, adminMiddleware, deleteProduct);
+
 router.post(
   "/admin/products/upload",
   verifyToken,
-  isAdmin,
-  upload.array("images", 5),
+  adminMiddleware,
+  uploadProductImages,
   (req, res) => {
-    const imageUrls = req.files.map(
-      file => `http://localhost:3002/uploads/products/${file.filename}`
+    const images = req.files.map(
+      (file) => `/uploads/products/${file.filename}`
     );
-    res.json(imageUrls);
+
+    res.json(images);
   }
 );
 
-/* ===== ADMIN PRODUCT ===== */
-router.post("/admin/products", verifyToken, isAdmin, createProduct);
-router.put("/admin/products/:id", verifyToken, isAdmin, updateProduct);
-router.delete("/admin/products/:id", verifyToken, isAdmin, deleteProduct);
-router.put("/admin/products/:id/stock", verifyToken, isAdmin, updateStock);
+/* =========================
+   ADMIN CATEGORY
+========================= */
+router.get(
+  "/admin/categories",
+  verifyToken,
+  adminMiddleware,
+  getAllCategoriesAdmin
+);
 
-/* ===== ADMIN CATEGORY ===== */
-router.post("/admin/categories", verifyToken, isAdmin, createCategory);
-router.put("/admin/categories/:id", verifyToken, isAdmin, updateCategory);
-router.delete("/admin/categories/:id", verifyToken, isAdmin, deleteCategory);
+router.post(
+  "/admin/categories",
+  verifyToken,
+  adminMiddleware,
+  createCategoryAdmin
+);
+
+router.put(
+  "/admin/categories/:id",
+  verifyToken,
+  adminMiddleware,
+  updateCategoryAdmin
+);
+
+router.delete(
+  "/admin/categories/:id",
+  verifyToken,
+  adminMiddleware,
+  deleteCategoryAdmin
+);
+
 
 export default router;

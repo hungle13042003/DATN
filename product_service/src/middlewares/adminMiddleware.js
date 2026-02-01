@@ -1,10 +1,7 @@
-
 export const adminMiddleware = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
-    next();
-  } else {
-    return res.status(403).json({
-      message: "Bạn không có quyền Admin"
-    });
-  }
+  if (req.user?.role === "admin") return next();
+
+  return res.status(403).json({
+    message: "Bạn không có quyền Admin"
+  });
 };

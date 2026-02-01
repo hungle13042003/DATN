@@ -1,169 +1,319 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
+import mongoose from "mongoose";
+import slugify from "slugify";
+/**
+ * =========================
+ * PUBLIC API
+ * =========================
+ */
 
-/* ================= USER ================= */
-
-// Lấy tất cả sản phẩm
+/**
+ * Lấy tất cả sản phẩm
+ * - tìm kiếm theo tên
+ * - lọc theo danh mục
+ */
 export const getAllProducts = async (req, res) => {
-  const products = await Product.find()
-    .populate("category")
-    .sort({ createdAt: -1 });
-
-  res.json(products);
-};
-
-// Lấy chi tiết sản phẩm
-export const getProductById = async (req, res) => {
-  const product = await Product.findById(req.params.id).populate("category");
-  if (!product)
-    return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-
-  res.json(product);
-};
-
-// Tìm kiếm
-export const searchProducts = async (req, res) => {
-  const keyword = req.query.keyword || "";
-
-  const products = await Product.find({
-    name: { $regex: keyword, $options: "i" },
-  }).populate("category");
-
-  res.json(products);
-};
-
-// Lọc theo danh mục
-export const getProductsByCategory = async (req, res) => {
-  const products = await Product.find({
-    category: req.params.categoryId,
-  }).populate("category");
-
-  res.json(products);
-};
-
-// Lấy danh mục
-export const getAllCategories = async (req, res) => {
-  const categories = await Category.find().sort({ createdAt: -1 });
-  res.json(categories);
-};
-
-// Lấy sản phẩm bán chạy
-export const getBestSellerProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isBestSeller: true })
+    const { keyword, category } = req.query;
+
+    const filter = { isActive: true };
+
+    // 🔍 Tìm kiếm theo tên
+    if (keyword) {
+      filter.name = { $regex: keyword, $options: "i" };
+    }
+
+    // 📂 Lọc theo danh mục
+    if (category && mongoose.Types.ObjectId.isValid(category)) {
+      filter.category = category;
+    }
+
+    const products = await Product.find(filter)
       .populate("category")
       .sort({ createdAt: -1 });
 
     res.json(products);
   } catch (error) {
-    res.status(500).json({ message: "Lỗi lấy sản phẩm bán chạy" });
+    res.status(500).json({ message: "Lỗi lấy danh sách sản phẩm" });
   }
 };
 
+/**
+ * Lấy chi tiết sản phẩm theo ID
+ */
+export const getProductDetail = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate("category");
 
+    if (!product || !product.isActive) {
+      return res.status(404).json({
+        message: "Không tìm thấy sản phẩm"
+      });
+    }
 
-/* ================= ADMIN ================= */
-
-// Thêm danh mục
-export const createCategory = async (req, res) => {
-  const category = await Category.create(req.body);
-  res.status(201).json(category);
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy chi tiết sản phẩm" });
+  }
 };
 
-// Cập nhật danh mục
-export const updateCategory = async (req, res) => {
-  const category = await Category.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  );
-  if (!category)
-    return res.status(404).json({ message: "Không tìm thấy danh mục" });
+/**
+ * Lấy sản phẩm bán chạy
+ */
+export const getBestSellerProducts = async (req, res) => {
+  try {
+    const products = await Product.find({
+      isBestSeller: true,
+      isActive: true
+    }).populate("category");
 
-  res.json(category);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi lấy sản phẩm bán chạy"
+    });
+  }
 };
 
-// Xóa danh mục
-export const deleteCategory = async (req, res) => {
-  const category = await Category.findByIdAndDelete(req.params.id);
-  if (!category)
-    return res.status(404).json({ message: "Không tìm thấy danh mục" });
-
-  res.json({ message: "Xóa danh mục thành công" });
+/**
+ * Lấy danh sách danh mục
+ */
+export const getCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({ isActive: true });
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi lấy danh mục"
+    });
+  }
 };
 
-// Thêm sản phẩm
+/**
+ * =========================
+ * ADMIN API
+ * =========================
+ */
+
+/**
+ * Thêm sản phẩm mới
+ */
 export const createProduct = async (req, res) => {
-  const product = await Product.create(req.body);
-  res.status(201).json(product);
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi tạo sản phẩm"
+    });
+  }
 };
 
-// Cập nhật sản phẩm
+/**
+ * Cập nhật sản phẩm
+ */
 export const updateProduct = async (req, res) => {
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  );
-  if (!product)
-    return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+  try {
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
 
-  res.json(product);
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi cập nhật sản phẩm"
+    });
+  }
 };
 
-// Xóa sản phẩm
+/**
+ * Xóa mềm sản phẩm
+ */
 export const deleteProduct = async (req, res) => {
-  const product = await Product.findByIdAndDelete(req.params.id);
-  if (!product)
-    return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+  try {
+    await Product.findByIdAndUpdate(req.params.id, {
+      isActive: false
+    });
 
-  res.json({ message: "Xóa sản phẩm thành công" });
+    res.json({
+      message: "Đã xóa sản phẩm"
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi xóa sản phẩm"
+    });
+  }
 };
 
-// Cập nhật tồn kho
-export const updateStock = async (req, res) => {
-  const { quantity } = req.body;
+/**
+ * =========================
+ * INTERNAL SERVICE API
+ * =========================
+ */
 
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    { quantity },
-    { new: true }
-  );
-
-  if (!product)
-    return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-
-  res.json(product);
-};
-
-
+/**
+ * Cart Service gọi
+ * Lấy danh sách sản phẩm theo ID
+ */
 export const getProductsByIds = async (req, res) => {
   try {
     const { ids } = req.body;
 
-    // Validate
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({
-        success: false,
-        message: "Danh sách productId không hợp lệ",
+        message: "Danh sách productId không hợp lệ"
       });
     }
 
-    // Lấy sản phẩm theo danh sách ID
     const products = await Product.find({
       _id: { $in: ids },
+      isActive: true
     });
 
-    return res.status(200).json({
-      success: true,
+    res.json({
       count: products.length,
-      data: products,
+      data: products
     });
   } catch (error) {
-    console.error("getProductsByIds error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Lỗi server khi lấy sản phẩm",
+    res.status(500).json({
+      message: "Lỗi lấy sản phẩm theo danh sách ID"
     });
+  }
+};
+
+
+/* ===============================
+   SEARCH PRODUCTS BY NAME
+   =============================== */
+export const searchProducts = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+
+    if (!keyword) {
+      return res.json([]);
+    }
+
+    const products = await Product.find({
+      name: { $regex: keyword, $options: "i" }, // không phân biệt hoa thường
+    })
+      .populate("category")
+      .sort({ createdAt: -1 });
+
+    res.json(products);
+  } catch (error) {
+    console.error("Search product error:", error);
+    res.status(500).json({ message: "Lỗi tìm kiếm sản phẩm" });
+  }
+};
+
+/* =========================
+   ADMIN CATEGORY (GỘP)
+========================= */
+
+/**
+ * Lấy danh sách danh mục (admin + search)
+ */
+export const getAllCategoriesAdmin = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+
+    const filter = {};
+    if (keyword) {
+      filter.name = { $regex: keyword, $options: "i" };
+    }
+
+    const categories = await Category.find(filter).sort({ createdAt: -1 });
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi lấy danh mục" });
+  }
+};
+
+/**
+ * Tạo danh mục
+ */
+export const createCategoryAdmin = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: "Thiếu tên danh mục" });
+    }
+
+    // 🔥 TẠO SLUG TỰ ĐỘNG
+    let slug = slugify(name, {
+      lower: true,
+      strict: true,
+      locale: "vi",
+    });
+
+    // 🔁 ĐẢM BẢO SLUG KHÔNG TRÙNG
+    let slugExists = await Category.findOne({ slug });
+    let count = 1;
+
+    while (slugExists) {
+      slug = `${slug}-${count}`;
+      slugExists = await Category.findOne({ slug });
+      count++;
+    }
+
+    const category = await Category.create({
+      name,
+      slug,
+      description,
+    });
+
+    res.status(201).json(category);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi tạo danh mục" });
+  }
+};
+
+/**
+ * Cập nhật danh mục
+ */
+export const updateCategoryAdmin = async (req, res) => {
+  try {
+    const { name, description } = req.body;
+
+    const updateData = { description };
+
+    if (name) {
+      updateData.name = name;
+      updateData.slug = slugify(name, {
+        lower: true,
+        strict: true,
+        locale: "vi",
+      });
+    }
+
+    const category = await Category.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi cập nhật danh mục" });
+  }
+};
+
+/**
+ * Xóa mềm danh mục
+ */
+export const deleteCategoryAdmin = async (req, res) => {
+  try {
+    await Category.findByIdAndUpdate(req.params.id, {
+      isActive: false,
+    });
+
+    res.json({ message: "Đã xóa danh mục" });
+  } catch (error) {
+    res.status(500).json({ message: "Lỗi xóa danh mục" });
   }
 };
