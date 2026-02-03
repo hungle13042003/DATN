@@ -1,5 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+
 import User from "../models/User.js";
 
 /**
@@ -333,3 +336,89 @@ export const updateUserByAdmin = async (req, res) => {
 };
 
 
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email, resetBaseUrl } = req.body;
+
+    if (!resetBaseUrl) {
+      return res.status(400).json({
+        message: "Thiếu resetBaseUrl",
+      });
+    }
+
+    const user = await User.findOne({ email, isActive: true });
+    if (!user) {
+      return res.status(404).json({ message: "Email không tồn tại" });
+    }
+
+    // Tạo token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    // Hash token
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 phút
+
+    await user.save();
+
+    // 🔥 FIX ĐA STORE
+    const resetLink = `${resetBaseUrl}/reset-password/${resetToken}`;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      to: user.email,
+      subject: "Đặt lại mật khẩu",
+      html: `
+        <h3>Yêu cầu đặt lại mật khẩu</h3>
+        <p>Click vào link dưới đây (có hiệu lực 15 phút):</p>
+        <a href="${resetLink}">${resetLink}</a>
+      `,
+    });
+
+    res.json({ message: "Đã gửi email đặt lại mật khẩu" });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: "Lỗi quên mật khẩu" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Token không hợp lệ hoặc đã hết hạn",
+      });
+    }
+
+    user.password = await bcrypt.hash(req.body.password, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.json({ message: "Đặt lại mật khẩu thành công" });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Lỗi reset mật khẩu" });
+  }
+};

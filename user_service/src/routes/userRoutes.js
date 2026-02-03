@@ -8,7 +8,9 @@ import {
   deactivateUser,
   adminLogin,
   getUserById,
-  updateUserByAdmin
+  updateUserByAdmin,
+  forgotPassword,
+  resetPassword
 } from "../controllers/userController.js";
 
 import { verifyToken, isAdmin } from "../middlewares/authMiddleware.js";
@@ -43,5 +45,7 @@ router.put(
   updateUserByAdmin
 );
 
+router.post("/auth/forgot-password", forgotPassword);
+router.post("/auth/reset-password/:token", resetPassword);
 
 export default router;

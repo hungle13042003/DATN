@@ -1,0 +1,95 @@
+/* ===============================
+   FORGOT & RESET PASSWORD
+================================ */
+
+.forgot-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2f7, #dde7f3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-container {
+  background: #ffffff;
+  width: 460px;
+  padding: 42px 38px;
+  border-radius: 18px;
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.12);
+  animation: fadeIn 0.4s ease;
+}
+
+.forgot-form h1 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.forgot-form p {
+  text-align: center;
+  color: #666;
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+
+.forgot-form label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.forgot-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  margin-bottom: 20px;
+  transition: 0.25s;
+}
+
+.forgot-form input:focus {
+  outline: none;
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.forgot-form button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #111, #333);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.forgot-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
+}
+
+.forgot-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
